@@ -1,6 +1,5 @@
 package com.example.testapp_video2.widgets
 
-import android.util.Log
 import androidx.compose.animation.*
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -11,38 +10,30 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Alignment.Companion.Top
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.myapplication.models.Movie
+import com.example.testapp_video2.ui.theme.Turquoise
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MovieRow(
     movie : Movie,
-    onClickItem: ( String ) -> Unit = {}
+    showFavoriteIcon : Boolean,
+    content : @Composable () -> Unit = {},
+    onClickItem: ( String ) -> Unit = {},
 ) {
-    var counter by remember {
-        mutableStateOf(0)
-    }
     var showHiddenInfo by remember {
         mutableStateOf(false)
     }
@@ -53,78 +44,87 @@ fun MovieRow(
         //.height(if (showHiddenInfo) 250.dp else 130.dp)
         .clickable {
             onClickItem(movie.id)
-            counter++
-            //counter.value++
-            Log.d("MainContent", "clicked: ${counter}")
         },
         shape = RoundedCornerShape(corner = CornerSize(16.dp)),
         elevation = 6.dp
     ) {
-        Row(verticalAlignment = Alignment.CenterVertically) {
-            Surface(modifier = Modifier
-                .padding(12.dp)
-                .size(100.dp),
-                //shape = RectangleShape,
-                //elevation = 6.dp
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                //Icon(imageVector = Icons.Default.AccountBox, contentDescription = "Profile picture")
-                AsyncImage(
-                    model = movie.images[0],
-                    contentDescription = "Movie poster",
-                    modifier = Modifier.clip(CircleShape),
-                    contentScale = ContentScale.Crop,
-                )
-            }
-            Column() {
-                Text(text = movie.title, fontWeight = FontWeight.Bold, fontSize = 15.sp)
-                Text(text = "Director: ${movie.director}", fontSize = 12.sp)
-                Text(text = "Released: ${movie.year}", fontSize = 12.sp)
-                AnimatedVisibility(
-                    visible = showHiddenInfo
+                Surface(modifier = Modifier
+                    .padding(12.dp)
+                    .size(100.dp),
+                    //shape = RectangleShape,
+                    //elevation = 6.dp
                 ) {
-                    Text(
-                        text = "Plot: ${movie.plot}", fontSize = 12.sp,
+                    //Icon(imageVector = Icons.Default.AccountBox, contentDescription = "Profile picture")
+                    AsyncImage(
+                        model = movie.images[0],
+                        contentDescription = "Movie poster",
+                        modifier = Modifier.clip(CircleShape),
+                        contentScale = ContentScale.Crop,
                     )
                 }
-                AnimatedVisibility(
-                    visible = showHiddenInfo) {
-                    Divider(color = Color.LightGray, thickness = 1.dp,
-                        modifier = Modifier.padding(2.dp)
+                Column() {
+                    Text(text = movie.title, fontWeight = FontWeight.Bold, fontSize = 15.sp)
+                    Text(text = "Director: ${movie.director}", fontSize = 12.sp)
+                    Text(text = "Released: ${movie.year}", fontSize = 12.sp)
+                    AnimatedVisibility(
+                        visible = showHiddenInfo
+                    ) {
+                        Text(
+                            text = "Plot: ${movie.plot}", fontSize = 12.sp,
+                        )
+                    }
+                    AnimatedVisibility(
+                        visible = showHiddenInfo) {
+                        Divider(color = Color.LightGray, thickness = 1.dp,
+                            modifier = Modifier.padding(2.dp)
+                        )
+                    }
+                    AnimatedVisibility(
+                        visible = showHiddenInfo
+                    ) {
+                        Text(
+                            text = "Genre: ${movie.genre}", fontSize = 12.sp,
+                        )
+                    }
+                    AnimatedVisibility(
+                        visible = showHiddenInfo
+                    ) {
+                        Text(
+                            text = "Actors: ${movie.actors}", fontSize = 12.sp,
+                        )
+                    }
+                    AnimatedVisibility(
+                        visible = showHiddenInfo
+                    ) {
+                        Text(
+                            text = "Rating: ${movie.rating}", fontSize = 12.sp,
+                        )
+                    }
+                    if (showHiddenInfo)
+                        Icon(
+                            imageVector = Icons.Default.KeyboardArrowUp,
+                            contentDescription = "Hide additional information",
+                            modifier = Modifier.clickable { showHiddenInfo = !showHiddenInfo }
+                        )
+                    else
+                        Icon(
+                            imageVector = Icons.Default.KeyboardArrowDown,
+                            contentDescription = "Show hidden information",
+                            modifier = Modifier.clickable { showHiddenInfo = !showHiddenInfo }
                         )
                 }
-                AnimatedVisibility(
-                    visible = showHiddenInfo
-                ) {
-                    Text(
-                        text = "Genre: ${movie.genre}", fontSize = 12.sp,
-                    )
-                }
-                AnimatedVisibility(
-                    visible = showHiddenInfo
-                ) {
-                    Text(
-                        text = "Actors: ${movie.actors}", fontSize = 12.sp,
-                    )
-                }
-                AnimatedVisibility(
-                    visible = showHiddenInfo
-                ) {
-                    Text(
-                        text = "Rating: ${movie.rating}", fontSize = 12.sp,
-                    )
-                }
-                if (showHiddenInfo)
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowUp,
-                        contentDescription = "Hide additional information",
-                        modifier = Modifier.clickable { showHiddenInfo = !showHiddenInfo }
-                    )
-                else
-                    Icon(
-                        imageVector = Icons.Default.KeyboardArrowDown,
-                        contentDescription = "Show hidden information",
-                        modifier = Modifier.clickable { showHiddenInfo = !showHiddenInfo }
-                    )
+            }
+            AnimatedVisibility(
+                visible = showFavoriteIcon
+            ) {
+                content()
             }
         }
     }
@@ -139,8 +139,6 @@ fun HorizontalScrollableImageView( movie : Movie ) {
                 elevation = 4.dp
             ) {
                 AsyncImage(
-                    //modifier = Modifier.clip(CircleShape),
-                    //contentScale = ContentScale.Crop,
                     model = ImageRequest.Builder(LocalContext.current)
                         .data( image )
                         .crossfade(true)
@@ -150,5 +148,23 @@ fun HorizontalScrollableImageView( movie : Movie ) {
             }
         }
     }
+}
+
+@Composable
+fun FavoriteIcon(
+    movie: Movie,
+    isFavorite: Boolean,
+    onFavIconClick: (Movie) -> Unit = {}
+) {
+    Icon(
+        imageVector = if (isFavorite) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
+        contentDescription = "Add to Favorites",
+        modifier = Modifier
+            .padding(end = 25.dp)
+            .clickable {
+                onFavIconClick(movie)
+            },
+        tint = Turquoise
+    )
 }
 

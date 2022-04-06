@@ -16,11 +16,12 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.models.Movie
 import com.example.myapplication.models.getMovies
+import com.example.testapp_video2.viewmodels.FavoritesViewModel
 import com.example.testapp_video2.navigation.MovieScreens
 import com.example.testapp_video2.widgets.MovieRow
 
 @Composable
-fun FavoritesScreen(navController: NavController = rememberNavController()) {
+fun FavoritesScreen(navController: NavController = rememberNavController(), viewModel: FavoritesViewModel) {
     Scaffold( topBar = {
         TopAppBar() {
             Row {
@@ -36,19 +37,18 @@ fun FavoritesScreen(navController: NavController = rememberNavController()) {
             }
         }
     } ) {
-        MainContent(navController)
+        MainContent(navController, viewModel.favoriteMovies)
     }
 }
 
 @Composable
-fun MainContent(navController: NavController = rememberNavController()) {
-    val movies = listOf<Movie>(getMovies()[5], getMovies()[8], getMovies()[3], getMovies()[6] )
+fun MainContent(navController: NavController = rememberNavController(), favMovies: List<Movie>) {
     Surface(
         color = MaterialTheme.colors.background
     ) {
         LazyColumn {
-            items( movies) { movie ->
-                MovieRow(movie = movie) { movieId ->
+            items( favMovies) { movie ->
+                MovieRow(movie = movie, showFavoriteIcon = false) { movieId ->
                     navController.navigate("${MovieScreens.DetailScreen.value}/$movieId")
                 }
             }
