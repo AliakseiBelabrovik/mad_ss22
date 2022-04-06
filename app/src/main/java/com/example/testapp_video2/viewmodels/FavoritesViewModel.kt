@@ -12,7 +12,7 @@ class FavoritesViewModel : ViewModel() {
 
     fun addMovieToFavorites( movie: Movie ) : Boolean {
         return if (!exists( movie = movie )) {
-            this._favoriteMovies.add( movie );
+            this._favoriteMovies.add( movie )
             true
         } else {
             false
@@ -24,7 +24,7 @@ class FavoritesViewModel : ViewModel() {
     }
 
     fun isFavorite( movie: Movie ) : Boolean {
-        return exists( movie );
+        return exists( movie )
     }
 
     private fun exists(movie: Movie) : Boolean {

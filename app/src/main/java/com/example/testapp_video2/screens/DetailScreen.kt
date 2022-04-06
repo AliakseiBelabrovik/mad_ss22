@@ -19,11 +19,9 @@ import com.example.testapp_video2.widgets.FavoriteIcon
 import com.example.testapp_video2.widgets.HorizontalScrollableImageView
 import com.example.testapp_video2.widgets.MovieRow
 
-//movieId : String ? = getMovies()[0].id
 @Composable
 fun DetailScreen(navController: NavController = rememberNavController(), favViewModel : FavoritesViewModel, movieId : String? = getMovies()[0].id) {
     val movie = getMovieById( movieId = movieId )
-
     Scaffold(topBar = {
         TopAppBar() {
             Row {

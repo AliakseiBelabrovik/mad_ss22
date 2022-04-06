@@ -15,7 +15,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.myapplication.models.Movie
-import com.example.myapplication.models.getMovies
 import com.example.testapp_video2.viewmodels.FavoritesViewModel
 import com.example.testapp_video2.navigation.MovieScreens
 import com.example.testapp_video2.widgets.MovieRow

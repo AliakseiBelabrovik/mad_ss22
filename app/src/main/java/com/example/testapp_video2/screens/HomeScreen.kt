@@ -1,6 +1,5 @@
 package com.example.testapp_video2.screens.home
 
-import android.util.Log
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -46,11 +45,6 @@ fun HomeScreen( navController: NavController = rememberNavController(), viewMode
                                     imageVector = Icons.Default.Favorite,
                                     contentDescription = "Favorites",
                                     modifier = Modifier.padding(4.dp)
-                                    /*
-                                        .clickable {
-                                            navController.navigate(MovieScreens.FavoritesScreen.value)
-                                        }
-                                     */
                                 )
                                 Text(
                                     text = "Favorites",
@@ -74,20 +68,6 @@ fun MainContent(movieList : List<Movie>, navController: NavController, favViewMo
     Surface(
         color = MaterialTheme.colors.background
     ) {
-        /*
-        LazyColumn {
-            items( movieList) { movie ->
-                MovieRow(movie = movie,
-                    content = FavoriteIcon(
-                        movie = movie,
-
-                ) { movieId ->
-                    navController.navigate("${MovieScreens.DetailScreen.value}/$movieId")
-                }
-           }
-        }
-
-         */
         LazyColumn {
             items( movieList ) { movie ->
                 MovieRow(
@@ -99,11 +79,6 @@ fun MainContent(movieList : List<Movie>, navController: NavController, favViewMo
                             isFavorite = favViewModel.isFavorite(movie = movie)
                         ) { movie ->
                             if ( ! favViewModel.addMovieToFavorites( movie = movie ) ) favViewModel.removeMovie( movie = movie )
-
-                            Log.i("XXXXXXXXXXXXXXHaha", "the movie is " + movie.title)
-                            favViewModel.favoriteMovies.forEach { movie ->
-                                Log.d("List of favorites contain", "" + movie.title)
-                            }
                         } }
                 ) { movieId -> navController.navigate("${MovieScreens.DetailScreen.value}/$movieId") }
             }

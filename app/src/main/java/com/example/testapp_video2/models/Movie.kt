@@ -1,7 +1,5 @@
 package com.example.myapplication.models
 
-import java.util.*
-
 data class Movie(
     val id: String,
     val title: String,
